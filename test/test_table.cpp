@@ -38,7 +38,7 @@ TEST_CASE("insert multiple row 2") {
 }
 
 TEST_CASE("select empty table") {
-    const auto table = Table();
+    auto table = Table();
     auto const rows = table.get_rows();
     CHECK(rows.empty());
 }

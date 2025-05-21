@@ -8,6 +8,7 @@ set(CORE_SOURCES
         src/parser.cpp
         src/command_handler.cpp
         src/table.cpp
+        src/disk_manager.cpp
 )
 
 add_library(CORE_SOURCES_LIB ${CORE_SOURCES})
@@ -36,4 +37,8 @@ add_test(test_tokenizer test_tokenizer)
 add_executable(test_table test/test_table.cpp)
 target_link_libraries(test_table PRIVATE CORE_SOURCES_LIB catch2_main)
 add_test(test_table test_table)
+
+add_executable(test_disk_manager test/test_disk_manager.cpp)
+target_link_libraries(test_disk_manager PRIVATE CORE_SOURCES_LIB catch2_main)
+add_test(test_disk_manager test_disk_manager)
 

@@ -1,21 +1,40 @@
-# Mini-SQLite
+# MiniS
+
+A simple relational database written in C++.
 
 ## Architecture:
 
 - Frontend:
     - tokenizer
     - parser
-    - code generator
 
 - Backend:
     - virtual machine
     - b-tree
-    - pager
-    - os interface
+    - disk manager: handle read/write to disk
 
-## Support Command
+### Tokenizer and Parser
 
-- Insert
-- Delete
-- Select
+Currently, support insert and select queries.
+
+### Data Storage Structure
+
+The database is stored in a single file called `minis.db`.
+The file contains a header and a sequence of records.
+The header contains the number of records stored in the file.
+The record contains only three fields: id, name, and email.
+
+| Field Name | Type      |
+|------------|-----------|
+| id         | int       |
+| name       | char[32]  |
+| email      | char[255] |
+
+| Num tuples = 3 | 
+|----------------|
+| Record 1       |
+| Record 2       |
+| Record 3       |
+
+
 
