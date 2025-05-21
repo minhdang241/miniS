@@ -8,21 +8,21 @@
 
 int main() {
 	auto command = std::string();
+	auto table = Table();
 	while (true) {
 		std::cout << "simple> ";
 		if (std::getline(std::cin, command)) {
 			if (command[0] == '.') {
-				std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+				std::ranges::transform(command, command.begin(), ::tolower);
 				if (command == ".exit") {
 					exit(EXIT_SUCCESS);
 				}
 				std::cout << std::format("Unrecognize command {}", command) << std::endl;
-			}
-			else {
+			} else {
 				try {
 					auto tokens = Tokenizer::tokenize(command);
 					auto stmt = Parser::parse(tokens);
-					CommandHandler::execute_stmt(stmt);
+					CommandHandler::execute_stmt(stmt, table);
 				} catch (std::logic_error& e) {
 					std::cout << "Parsing error: " << e.what() << std::endl;
 				}

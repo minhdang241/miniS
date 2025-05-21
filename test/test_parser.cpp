@@ -5,11 +5,9 @@
 TEST_CASE("parse insert stmt") {
 	auto tokens = std::vector{
 		Token("INSERT", "VERB"),
-		Token("into", "ARGS"),
-		Token("users", "ARGS"),
-		Token("(email)", "ARGS"),
-		Token("values", "ARGS"),
-		Token("abc@gmail.com", "ARGS"),
+		Token("1", "ARGS"),
+		Token("minhdg241", "ARGS"),
+		Token("minhdg241@gmail.com", "ARGS"),
 	};
 	auto stmt = Parser::parse(tokens);
 	CHECK(stmt.getCommand() == "INSERT");

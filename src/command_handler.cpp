@@ -1,14 +1,15 @@
 #include "command_handler.h"
 #include <iostream>
 
-auto CommandHandler::execute_stmt(Stmt const& stmt) -> void {
+auto CommandHandler::execute_stmt(Stmt const& stmt, Table& table) -> void {
 	if (stmt.getCommand() == "INSERT") {
-		std::cout << "This is where we would do an insert\n";
-	}
-	else if (stmt.getCommand() == "SELECT") {
-		std::cout << "This is where we would do a select\n";
-	}
-	else {
+		auto const row = stmt.getRow();
+		table.insert(row);
+	} else if (stmt.getCommand() == "SELECT") {
+		for (auto const rows = table.get_rows(); auto const& row: rows) {
+			std::cout << row.id << " " << row.name.data() << " " << row.email.data() << "\n";
+		}
+	} else {
 		std::cout << "invalid\n";
 	}
 }

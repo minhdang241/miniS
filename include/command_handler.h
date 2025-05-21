@@ -4,6 +4,6 @@
 
 class CommandHandler {
 public:
-    static auto execute_stmt(Stmt const& stmt) -> void;
+    static auto execute_stmt(Stmt const& stmt, Table& table) -> void;
 };
 #endif

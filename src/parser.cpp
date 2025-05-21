@@ -1,24 +1,45 @@
 #include "parser.h"
 
-Stmt::Stmt(const std::string& command, const std::vector<std::string>& args)
-: command_{command}
-, args_{args} {};
+#include <format>
 
-auto Stmt::getArgs() const -> std::vector<std::string> {
-	return args_;
+Stmt::Stmt(std::string const&& type, Row row): type_{type}, row_{row} {
+};
+
+Stmt::Stmt(std::string const&& type): type_{type} {
+}
+
+
+auto Stmt::getRow() const -> Row {
+	return row_;
 }
 
 auto Stmt::getCommand() const -> std::string {
-	return command_;
+	return type_;
 }
 
 auto Parser::parse(std::vector<Token> const& tokens) -> Stmt {
-	if (tokens.front().getKind() != "VERB") {
+	auto const& first_token = tokens.front();
+	if (first_token.getKind() != "VERB") {
 		throw std::logic_error("First token must be VERB");
 	}
 	auto args = std::vector<std::string>(tokens.size() - 1);
-	std::transform(tokens.begin() + 1, tokens.end(), args.begin(), [](Token const& t) -> std::string {
-		return t.getSpelling();
-	});
-	return {tokens.front().getSpelling(), args};
+	if (first_token.getSpelling() == "INSERT") {
+		if (tokens.size() != 4) {
+			throw std::logic_error("The size of insert statement must be 4");
+		}
+		try {
+			auto id = stoi(tokens[1].getSpelling());
+			auto const name_str = tokens[2].getSpelling();
+			auto name = std::array<char, 32>();
+			std::ranges::copy(name_str, name.begin());
+			auto const email_str = tokens[3].getSpelling();
+			auto email = std::array<char, 255>();
+			std::ranges::copy(email_str, email.begin());
+			auto const row = Row(id, name, email);
+			return Stmt{std::move(first_token.getSpelling()), row};
+		} catch (std::exception const& e) {
+			throw std::logic_error(std::format("Error when converting the arguments to row {}", e.what()));
+		}
+	}
+	return Stmt{std::move(first_token.getSpelling())};
 }

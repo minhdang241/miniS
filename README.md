@@ -13,4 +13,9 @@
     - pager
     - os interface
 
+## Support Command
+
+- Insert
+- Delete
+- Select
 

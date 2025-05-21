@@ -7,6 +7,7 @@ set(CORE_SOURCES
         src/tokenizer.cpp
         src/parser.cpp
         src/command_handler.cpp
+        src/table.cpp
 )
 
 add_library(CORE_SOURCES_LIB ${CORE_SOURCES})
@@ -28,7 +29,11 @@ add_executable(test_parser test/test_parser.cpp)
 target_link_libraries(test_parser PRIVATE CORE_SOURCES_LIB catch2_main)
 add_test(test_parser test_parser)
 
-add_executable(test_tokenizer src/tokenizer.cpp test/test_tokenizer.cpp)
+add_executable(test_tokenizer test/test_tokenizer.cpp)
 target_link_libraries(test_tokenizer PRIVATE CORE_SOURCES_LIB catch2_main)
 add_test(test_tokenizer test_tokenizer)
+
+add_executable(test_table test/test_table.cpp)
+target_link_libraries(test_table PRIVATE CORE_SOURCES_LIB catch2_main)
+add_test(test_table test_table)
 

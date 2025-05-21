@@ -3,19 +3,22 @@
 #include <vector>
 #include <string>
 
+#include "table.h"
 #include "tokenizer.h"
 
 class Stmt {
 public:
-    Stmt(const std::string& command, const std::vector<std::string>& args);
+    Stmt(std::string const&& type, Row row);
 
-    auto getCommand() const -> std::string;
+    explicit Stmt(std::string const&& type);
 
-    auto getArgs() const -> std::vector<std::string>;
+    [[nodiscard]] auto getCommand() const -> std::string;
+
+    [[nodiscard]] auto getRow() const -> Row;
 
 private:
-    std::string command_;
-    std::vector<std::string> args_;
+    std::string type_;
+    Row row_{};
 };
 
 class Parser {
