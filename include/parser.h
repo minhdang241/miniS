@@ -8,17 +8,17 @@
 
 class Stmt {
 public:
-    Stmt(std::string const&& type, Row row);
+    Stmt(std::string const&& type, Record row);
 
     explicit Stmt(std::string const&& type);
 
     [[nodiscard]] auto getCommand() const -> std::string;
 
-    [[nodiscard]] auto getRow() const -> Row;
+    [[nodiscard]] auto getRow() const -> Record;
 
 private:
     std::string type_;
-    Row row_{};
+    Record row_{};
 };
 
 class Parser {

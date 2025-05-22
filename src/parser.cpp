@@ -2,14 +2,14 @@
 
 #include <format>
 
-Stmt::Stmt(std::string const&& type, Row row): type_{type}, row_{row} {
+Stmt::Stmt(std::string const&& type, Record row): type_{type}, row_{row} {
 };
 
 Stmt::Stmt(std::string const&& type): type_{type} {
 }
 
 
-auto Stmt::getRow() const -> Row {
+auto Stmt::getRow() const -> Record {
 	return row_;
 }
 
@@ -35,7 +35,7 @@ auto Parser::parse(std::vector<Token> const& tokens) -> Stmt {
 			auto const email_str = tokens[3].getSpelling();
 			auto email = std::array<char, 255>();
 			std::ranges::copy(email_str, email.begin());
-			auto const row = Row(id, name, email);
+			auto const row = Record(id, name, email);
 			return Stmt{std::move(first_token.getSpelling()), row};
 		} catch (std::exception const& e) {
 			throw std::logic_error(std::format("Error when converting the arguments to row {}", e.what()));

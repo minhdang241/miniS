@@ -4,11 +4,11 @@
 
 #include "table.h"
 
-Row::Row(int id, std::array<char, 32> const& name, std::array<char, 255> const& email): id{id}, name{name},
+Record::Record(int id, std::array<char, 32> const& name, std::array<char, 255> const& email): id{id}, name{name},
     email{email} {
 }
 
-auto Row::serialize() const -> std::array<char, mini_sqlite::ROW_SIZE> {
+auto Record::serialize() const -> std::array<char, mini_sqlite::ROW_SIZE> {
     auto data = std::array<char, mini_sqlite::ROW_SIZE>();
     std::memcpy(data.data(), &id, sizeof(id));
     std::memcpy(data.data() + sizeof(id), name.data(), 32);
@@ -16,7 +16,7 @@ auto Row::serialize() const -> std::array<char, mini_sqlite::ROW_SIZE> {
     return data;
 }
 
-Page::Page(std::vector<Row> const& rows): rows_{rows} {
+Page::Page(std::vector<Record> const& rows): rows_{rows} {
 }
 
 Page::Page(int const num_pages): num_pages_{num_pages} {
@@ -49,7 +49,7 @@ auto Page::deserialize(const std::array<char, mini_sqlite::PAGE_SIZE>& data) -> 
     int id;
     auto name = std::array<char, 32>();
     auto email = std::array<char, 255>();
-    auto rows = std::vector<Row>();
+    auto rows = std::vector<Record>();
     for (auto i = 0; i < num_rows; i++) {
         memcpy(&id, data.data() + offset, sizeof(int));
         offset += sizeof(int);
@@ -68,7 +68,7 @@ auto Page::deserialize_p0(const std::array<char, mini_sqlite::PAGE_SIZE>& data) 
     return Page(num_pages);
 }
 
-auto Page::add_row(Row const& row) -> void {
+auto Page::add_row(Record const& row) -> void {
     rows_.push_back(row);
 }
 
@@ -80,7 +80,7 @@ auto Page::get_max_rows() const -> size_t {
     return max_num_rows_;
 }
 
-auto Page::get_rows() const -> std::vector<Row> {
+auto Page::get_rows() const -> std::vector<Record> {
     return rows_;
 }
 
@@ -100,7 +100,7 @@ auto Table::allocate_page() -> void {
     update_num_pages(static_cast<int>(pages.size()));
 }
 
-auto Table::insert(Row const& row) -> void {
+auto Table::insert(Record const& row) -> void {
     auto& pages = get_pages();
     if (pages.size() == 1) {
         allocate_page();
@@ -115,8 +115,8 @@ auto Table::insert(Row const& row) -> void {
     // TODO: do it in a more efficient way than copying.
 }
 
-auto Table::get_rows() -> std::vector<Row> {
-    auto result = std::vector<Row>();
+auto Table::get_rows() -> std::vector<Record> {
+    auto result = std::vector<Record>();
     auto pages = get_pages();
     auto it = pages.begin();
     ++it;

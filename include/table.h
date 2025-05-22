@@ -8,13 +8,13 @@ id          integer(8bytes)
 username	varchar(32bytes)
 email	    varchar(255bytes)
 */
-class Row {
+class Record {
 public:
     inline static int size = mini_sqlite::ROW_SIZE;
 
-    Row(int id_, std::array<char, 32> const& name, std::array<char, 255> const& email);
+    Record(int id_, std::array<char, 32> const& name, std::array<char, 255> const& email);
 
-    Row() = default;
+    Record() = default;
 
     [[nodiscard]] auto serialize() const -> std::array<char, mini_sqlite::ROW_SIZE>;
 
@@ -25,13 +25,13 @@ public:
 
 class Page {
 public:
-    explicit Page(std::vector<Row> const&);
+    explicit Page(std::vector<Record> const&);
 
     explicit Page(int);
 
     Page() = default;
 
-    auto add_row(Row const&) -> void;
+    auto add_row(Record const&) -> void;
 
     [[nodiscard]] auto get_num_pages() const -> int;
 
@@ -39,7 +39,7 @@ public:
 
     [[nodiscard]] auto get_num_rows() const -> size_t;
 
-    [[nodiscard]] auto get_rows() const -> std::vector<Row>;
+    [[nodiscard]] auto get_rows() const -> std::vector<Record>;
 
     [[nodiscard]] auto serialize() const -> std::array<char, mini_sqlite::PAGE_SIZE>;
 
@@ -54,20 +54,20 @@ public:
 private:
     // When calculate the max rows, we have to subtract the memory space used to
     // store the page header (an integer keeping track of the number of rows)
-    size_t max_num_rows_ = (mini_sqlite::PAGE_SIZE - sizeof(int)) / Row::size;
+    size_t max_num_rows_ = (mini_sqlite::PAGE_SIZE - sizeof(int)) / Record::size;
     int num_pages_ = 0;
-    std::vector<Row> rows_;
+    std::vector<Record> rows_;
 };
 
 class Table {
 public:
     [[nodiscard]] auto get_pages() -> std::vector<Page>&;
 
-    [[nodiscard]] auto get_rows() -> std::vector<Row>;
+    [[nodiscard]] auto get_rows() -> std::vector<Record>;
 
     [[nodiscard]] auto get_num_pages() const -> int;
 
-    auto insert(Row const&) -> void;
+    auto insert(Record const&) -> void;
 
     auto update_pages(int page_id, Page const& page) -> void;
 

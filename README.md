@@ -36,5 +36,10 @@ The record contains only three fields: id, name, and email.
 | Record 2       |
 | Record 3       |
 
+Problem with this design:
+whenever we want to find a record, for example, with id = 100,
+we have to scan through all the pages to find the record.
+
+
 
 
