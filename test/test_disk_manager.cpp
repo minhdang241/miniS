@@ -27,4 +27,7 @@ TEST_CASE("Save data") {
     CHECK(page0.get_num_pages() == 2);
     auto page1 = disk_manager.read_page(1, table);
     CHECK(page1.get_num_rows() == 3);
+    // Clean up the file
+    std::ofstream clear_file(filename, std::ios::trunc);
+    clear_file.close();
 }
