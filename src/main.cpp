@@ -23,7 +23,8 @@ int main() {
 					exit(EXIT_SUCCESS);
 				}
 				std::cout << std::format("Unrecognize command {}", command) << std::endl;
-			} else {
+			}
+			else {
 				try {
 					auto tokens = Tokenizer::tokenize(command);
 					auto stmt = Parser::parse(tokens);

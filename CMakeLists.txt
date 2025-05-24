@@ -8,7 +8,10 @@ set(CORE_SOURCES
         src/parser.cpp
         src/command_handler.cpp
         src/table.cpp
-        src/disk_manager.cpp
+        src/bplus_tree.cpp
+        src/bplus_tree_leaf_node.cpp
+        src/bplus_tree_internal_node.cpp
+        src/bplus_tree_node.cpp
 )
 
 add_library(CORE_SOURCES_LIB ${CORE_SOURCES})
@@ -42,3 +45,6 @@ add_executable(test_disk_manager test/test_disk_manager.cpp)
 target_link_libraries(test_disk_manager PRIVATE CORE_SOURCES_LIB catch2_main)
 add_test(test_disk_manager test_disk_manager)
 
+add_executable(test_btree test/test_btree.cpp)
+target_link_libraries(test_btree PRIVATE CORE_SOURCES_LIB catch2_main)
+add_test(test_btree test_btree)
