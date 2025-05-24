@@ -1,5 +1,6 @@
 
 #include "disk_manager.h"
+
 #include <stdexcept>
 
 DiskManager::DiskManager(std::filesystem::path const& db_file)
@@ -59,13 +60,18 @@ auto DiskManager::read_page(int const page_id, Table const& table) -> Page {
 	return page;
 }
 
-auto DiskManager::load_data(Table& table) -> void {
+auto DiskManager::load_data(Table& table, BPlusTree& index) -> void {
 	auto& pages = table.get_pages();
 	pages[0] = read_page(0, table);
 	auto const& page0 = pages.front();
 	table.update_num_pages(page0.get_num_pages());
 	for (auto i = 1; i < table.get_num_pages(); ++i) {
-		pages.push_back(read_page(i, table));
+		pages[i] = read_page(i, table);
+	}
+	for (auto i = 0; i < table.get_num_pages(); ++i) {
+		for (auto& page = pages[i]; auto const& row : page.get_rows()) {
+			index.insert(row.id, {i, row.id});
+		}
 	}
 }
 

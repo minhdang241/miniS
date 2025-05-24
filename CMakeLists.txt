@@ -8,6 +8,7 @@ set(CORE_SOURCES
         src/parser.cpp
         src/command_handler.cpp
         src/table.cpp
+        src/disk_manager.cpp
         src/bplus_tree.cpp
         src/bplus_tree_leaf_node.cpp
         src/bplus_tree_internal_node.cpp

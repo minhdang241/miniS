@@ -15,7 +15,7 @@ auto BPlusTreeLeafNode::insert(int const key, std::pair<int, int> const& value) 
 auto BPlusTreeLeafNode::find(int const key) -> std::pair<int, int> {
 	auto const it = std::ranges::upper_bound(this->keys_, key);
 	auto const index = std::distance(this->keys_.begin(), it);
-	return rids_[index];
+	return rids_.at(index - 1);
 }
 
 auto BPlusTreeLeafNode::get_values() -> std::vector<std::pair<int, int>>& {

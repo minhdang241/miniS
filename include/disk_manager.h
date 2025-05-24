@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "table.h"
+#include "bplus_tree.h"
 
 class DiskManager {
 public:
@@ -29,7 +30,7 @@ public:
      */
     auto increase_disk_space(size_t current_page_counts) -> void;
 
-    auto load_data(Table& table) -> void;
+    auto load_data(Table& table, BPlusTree& index) -> void;
 
     auto save_data(Table& table) -> void;
 

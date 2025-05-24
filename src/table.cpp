@@ -4,10 +4,12 @@
 
 #include "table.h"
 
-Record::Record(int id, std::array<char, 32> const& name, std::array<char, 255> const& email)
-: id{id}
-, name{name}
-, email{email} {}
+#include <iostream>
+
+Record::Record(int const id_, std::array<char, 32> const& name_, std::array<char, 255> const& email_)
+: id{id_}
+, name{name_}
+, email{email_} {}
 
 auto Record::serialize() const -> std::array<char, mini_sqlite::ROW_SIZE> {
 	auto data = std::array<char, mini_sqlite::ROW_SIZE>();

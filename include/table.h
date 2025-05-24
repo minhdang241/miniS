@@ -18,9 +18,9 @@ public:
 
     [[nodiscard]] auto serialize() const -> std::array<char, mini_sqlite::ROW_SIZE>;
 
-    int id;
-    std::array<char, 32> name;
-    std::array<char, 255> email;
+    int id = -1;
+    std::array<char, 32> name{};
+    std::array<char, 255> email{};
 };
 
 class Page {

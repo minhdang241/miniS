@@ -121,7 +121,6 @@ auto BPlusTree::find(int const key) const -> std::pair<int, int> {
 		current_node = internal;
 	}
 	auto const leaf = dynamic_cast<BPlusTreeLeafNode*>(current_node);
-	assert(leaf != nullptr);
 	return leaf->find(key);
 }
 
